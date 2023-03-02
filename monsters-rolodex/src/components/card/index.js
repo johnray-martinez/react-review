@@ -6,8 +6,8 @@ const Card = (props) => {
   return (
     <div className='card'>
       <img src={image}/>
-      <p>Name: {name}</p>
-      <p>Email: {email}</p>
+      <p className='card__title'>Name: {name}</p>
+      <p className='card__title'>Email: {email}</p>
     </div>
   );
 }

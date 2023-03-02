@@ -1,24 +1,23 @@
 import {Component} from 'react';
 import Monster from '../../components/monster';
+import InputField from '../../components/inputField';
 
 class Dashboard extends Component {
   constructor() {
     super();
 
     this.state = {
+      searchBar: '',
       monsters: []
     };
   }
 
   // lifecycle methods
   componentDidMount() {
-    console.log('mount')
     fetch('https://jsonplaceholder.typicode.com/users')
     .then((response) => response.json())
     .then((data) => {
-      this.setState({monsters: data}, () => {
-        console.log(this.state);
-      });
+      this.setState({monsters: data});
     })
     .catch(console.error);
   }
@@ -30,8 +29,11 @@ class Dashboard extends Component {
     });
   }
 
+  updateSearchBar = (keyword) => {
+    this.setState({searchBar: keyword})
+  }
+
   render() {
-    console.log('render')
     return(
       <main className="dashboard">
           <p>
@@ -40,9 +42,12 @@ class Dashboard extends Component {
           <button onClick={this.handleClick} type="button">
             Change Name
           </button>
-
-          {this.state.monsters.map((monster, i) => {
-            return <Monster key={i} data={monster}/>
+          <InputField callback={this.updateSearchBar} type='search'/>
+          {this.state.monsters
+          .map((monster) => {
+            if (monster.name.toLowerCase().includes(this.state.searchBar.toLowerCase())) {
+              return <Monster key={monster.id} data={monster}/>
+            }
           })}
       </main>
     );

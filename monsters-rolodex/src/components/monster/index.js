@@ -6,7 +6,6 @@ const Monster = (props) => {
   return (
     <div className='monster'>
       <p>Name: {name}</p>
-      <p>Type: {type}</p>
     </div>
   );
 }

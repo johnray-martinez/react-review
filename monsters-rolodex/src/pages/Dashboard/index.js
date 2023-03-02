@@ -12,7 +12,15 @@ class Dashboard extends Component {
 
   // lifecycle methods
   componentDidMount() {
-
+    console.log('mount')
+    fetch('https://jsonplaceholder.typicode.com/users')
+    .then((response) => response.json())
+    .then((data) => {
+      this.setState({monsters: data}, () => {
+        console.log(this.state);
+      });
+    })
+    .catch(console.error);
   }
 
   // helpers
@@ -23,8 +31,9 @@ class Dashboard extends Component {
   }
 
   render() {
+    console.log('render')
     return(
-      <main class="dashboard">
+      <main className="dashboard">
           <p>
             {this.state.currentName}
           </p>

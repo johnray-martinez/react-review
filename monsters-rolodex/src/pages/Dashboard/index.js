@@ -29,8 +29,8 @@ class Dashboard extends Component {
     });
   }
 
-  updateSearchBar = (keyword) => {
-    this.setState({searchBar: keyword})
+  updateSearchBar = (e) => {
+    this.setState({searchBar: e.target.value})
   }
 
   getFilteredMonsters = () => {
@@ -40,16 +40,9 @@ class Dashboard extends Component {
   }
 
   render() {
-    let {currentName, monsters} = this.state;
     return(
       <main className="dashboard">
-          <p>
-            {currentName}
-          </p>
-          <button onClick={this.handleClick} type="button">
-            Change Name
-          </button>
-          <InputField callback={this.updateSearchBar} type='search'/>
+          <InputField label='Search' value={this.state.searchBar} onChangeHandler={this.updateSearchBar} type='search'/>
           <CardList list={this.getFilteredMonsters()}/>
       </main>
     );

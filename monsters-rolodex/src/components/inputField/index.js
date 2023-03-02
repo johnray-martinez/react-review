@@ -1,30 +1,22 @@
-import {Component} from 'react';
+import './input-field.styles.css';
 
-class InputField extends Component {
-  constructor() {
-    super();
-
-    this.state = {
-      value: ''
-    }
-  }
-
-  changeHandler = ({target}) => {
-    this.setState({value: target.value});
-    this.props.callback(target.value);
-  }
-
-  render() {
-    let {callback, ...otherProps} = this.props;
-    return(
-      <div className='input-field'>
-        <input
-          onChange={this.changeHandler}
-         {...otherProps} 
-        />
-      </div>
-    );
-  }
+const InputField = (props) => {
+  let {onChangeHandler, 
+    label, 
+    className,
+    ...otherProps} = props;
+  return(
+    <div className='input-field'>
+      {label && <label>
+        {label}
+      </label>}
+      <input
+        className={`input-field ${className}}`}
+        onChange={onChangeHandler}
+       {...otherProps} 
+      />
+    </div>
+  );
 }
 
 export default InputField;

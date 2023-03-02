@@ -1,5 +1,5 @@
 import {Component} from 'react';
-import Monster from '../../components/monster';
+import CardList from '../../components/cardList';
 import InputField from '../../components/inputField';
 
 class Dashboard extends Component {
@@ -17,33 +17,33 @@ class Dashboard extends Component {
     fetch('https://jsonplaceholder.typicode.com/users')
     .then((response) => response.json())
     .then((data) => {
+      data = data.map(item => {
+        return {
+          ...item,
+          image: `https://robohash.org/${item.id}?set=set2`
+        }
+      })
       this.setState({monsters: data});
     })
     .catch(console.error);
   }
 
   // helpers
-  handleClick = () => {
-    this.setState({currentName: 'Hotdog'}, () => {
-      console.log(this.state);
-    });
+  updateSearchBar = (e) => {
+    this.setState({searchBar: e.target.value})
   }
 
-  updateSearchBar = (keyword) => {
-    this.setState({searchBar: keyword})
+  getFilteredMonsters = () => {
+    let {monsters, searchBar} = this.state;
+
+    return monsters.filter(({name}) => name.toLowerCase().includes(searchBar));
   }
 
   render() {
-    let {monsters, currentName, searchBar} = this.state;
     return(
       <main className="dashboard">
-          <InputField callback={this.updateSearchBar} type='search'/>
-          {monsters
-          .map((monster) => {
-            if (monster.name.toLowerCase().includes(searchBar.toLowerCase())) {
-              return <Monster key={monster.id} data={monster}/>
-            }
-          })}
+          <InputField className='monster-searchbox' label='Search' value={this.state.searchBar} onChangeHandler={this.updateSearchBar} type='search'/>
+          <CardList list={this.getFilteredMonsters()}/>
       </main>
     );
   }

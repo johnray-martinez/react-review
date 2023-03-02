@@ -37,12 +37,6 @@ class Dashboard extends Component {
     let {monsters, currentName, searchBar} = this.state;
     return(
       <main className="dashboard">
-          <p>
-            {currentName}
-          </p>
-          <button onClick={this.handleClick} type="button">
-            Change Name
-          </button>
           <InputField callback={this.updateSearchBar} type='search'/>
           {monsters
           .map((monster) => {

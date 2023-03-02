@@ -34,18 +34,19 @@ class Dashboard extends Component {
   }
 
   render() {
+    let {monsters, currentName, searchBar} = this.state;
     return(
       <main className="dashboard">
           <p>
-            {this.state.currentName}
+            {currentName}
           </p>
           <button onClick={this.handleClick} type="button">
             Change Name
           </button>
           <InputField callback={this.updateSearchBar} type='search'/>
-          {this.state.monsters
+          {monsters
           .map((monster) => {
-            if (monster.name.toLowerCase().includes(this.state.searchBar.toLowerCase())) {
+            if (monster.name.toLowerCase().includes(searchBar.toLowerCase())) {
               return <Monster key={monster.id} data={monster}/>
             }
           })}

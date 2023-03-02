@@ -1,5 +1,5 @@
 import {Component} from 'react';
-import Monster from '../../components/monster';
+import CardList from '../../components/cardList';
 import InputField from '../../components/inputField';
 
 class Dashboard extends Component {
@@ -33,8 +33,14 @@ class Dashboard extends Component {
     this.setState({searchBar: keyword})
   }
 
+  getFilteredMonsters = () => {
+    let {monsters, searchBar} = this.state;
+
+    return monsters.filter(({name}) => name.toLowerCase().includes(searchBar));
+  }
+
   render() {
-    let {monsters, currentName, searchBar} = this.state;
+    let {currentName, monsters} = this.state;
     return(
       <main className="dashboard">
           <p>
@@ -44,12 +50,7 @@ class Dashboard extends Component {
             Change Name
           </button>
           <InputField callback={this.updateSearchBar} type='search'/>
-          {monsters
-          .map((monster) => {
-            if (monster.name.toLowerCase().includes(searchBar.toLowerCase())) {
-              return <Monster key={monster.id} data={monster}/>
-            }
-          })}
+          <CardList list={this.getFilteredMonsters()}/>
       </main>
     );
   }

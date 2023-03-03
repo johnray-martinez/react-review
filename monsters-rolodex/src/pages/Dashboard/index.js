@@ -1,52 +1,43 @@
-import {Component} from 'react';
+import {useState, useEffect} from 'react';
 import CardList from '../../components/cardList';
 import InputField from '../../components/inputField';
 
-class Dashboard extends Component {
-  constructor() {
-    super();
+const Dashboard = () => {
+  // state setup
+  const [searchBar, setSearchBar] = useState('');
+  const [monsters, setMonsters] = useState([]);
 
-    this.state = {
-      searchBar: '',
-      monsters: []
-    };
-  }
-
-  // lifecycle methods
-  componentDidMount() {
+  // hooks
+  useEffect(() => {
     fetch('https://jsonplaceholder.typicode.com/users')
-    .then((response) => response.json())
-    .then((data) => {
-      data = data.map(item => {
-        return {
-          ...item,
-          image: `https://robohash.org/${item.id}?set=set2`
-        }
-      })
-      this.setState({monsters: data});
-    })
-    .catch(console.error);
-  }
+     .then((response) => response.json())
+     .then((data) => {
+       data = data.map(item => {
+         return {
+           ...item,
+           image: `https://robohash.org/${item.id}?set=set2`
+         }
+       })
+       setMonsters(data);
+     })
+     .catch(console.error);
+  }, [])
 
   // helpers
-  updateSearchBar = (e) => {
-    this.setState({searchBar: e.target.value})
+  const updateSearchBar = (e) => {
+    setSearchBar(e.value);
   }
 
-  getFilteredMonsters = () => {
-    let {monsters, searchBar} = this.state;
-
+  const getFilteredMonsters = () => {
     return monsters.filter(({name}) => name.toLowerCase().includes(searchBar));
   }
 
-  render() {
-    return(
-      <main className="dashboard">
-          <InputField className='monster-searchbox' label='Search' value={this.state.searchBar} onChangeHandler={this.updateSearchBar} type='search'/>
-          <CardList list={this.getFilteredMonsters()}/>
-      </main>
-    );
-  }
+  return(
+    <main className="dashboard">
+        <InputField className='monster-searchbox' label='Search' value={searchBar} onChangeHandler={updateSearchBar} type='search'/>
+        <CardList list={getFilteredMonsters()}/>
+    </main>
+  );
 }
 
 export default Dashboard;

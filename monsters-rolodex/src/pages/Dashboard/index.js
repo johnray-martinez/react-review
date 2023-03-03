@@ -6,6 +6,7 @@ const Dashboard = () => {
   // state setup
   const [searchBar, setSearchBar] = useState('');
   const [monsters, setMonsters] = useState([]);
+  const [filteredMonsters, setFilteredMonsters] = useState([]);
 
   // hooks
   useEffect(() => {
@@ -23,19 +24,21 @@ const Dashboard = () => {
      .catch(console.error);
   }, [])
 
+  useEffect(() => {
+    let newFilteredMonsters = monsters.filter(({name}) => name.toLowerCase().includes(searchBar));
+
+    setFilteredMonsters(newFilteredMonsters);
+  }, [searchBar, monsters])
+
   // helpers
   const updateSearchBar = (e) => {
-    setSearchBar(e.value);
-  }
-
-  const getFilteredMonsters = () => {
-    return monsters.filter(({name}) => name.toLowerCase().includes(searchBar));
+    setSearchBar(e.target.value);
   }
 
   return(
     <main className="dashboard">
         <InputField className='monster-searchbox' label='Search' value={searchBar} onChangeHandler={updateSearchBar} type='search'/>
-        <CardList list={getFilteredMonsters()}/>
+        <CardList list={filteredMonsters}/>
     </main>
   );
 }

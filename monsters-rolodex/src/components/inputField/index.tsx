@@ -1,16 +1,28 @@
+import { ChangeEventHandler } from 'react';
 import './input-field.styles.css';
 
-const InputField = (props) => {
-  let {onChangeHandler, 
+type InputFieldProps = {
+  label: string,
+  className?: string,
+  type: string
+  onChangeHandler: ChangeEventHandler,
+}
+
+const InputField = (props: InputFieldProps) => {
+  let {
+    onChangeHandler, 
     label, 
     className,
-    ...otherProps} = props;
+    type,
+    ...otherProps
+  } = props;
   return(
     <div className='input-field'>
       {label && <label>
         {label}
       </label>}
       <input
+        type={type}
         className={`input-field ${className}}`}
         onChange={onChangeHandler}
        {...otherProps} 

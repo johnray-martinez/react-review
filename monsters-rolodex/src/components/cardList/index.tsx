@@ -1,7 +1,12 @@
 import Card from '../card';
 import './card-list.styles.css';
+import { Monster } from '../../pages/Dashboard';
 
-const CardList = ({list}) => {
+type CardListProps = {
+  list: Monster[]
+}
+
+const CardList = ({list}: CardListProps) => {
   return (
     <div className='card-list'>
       {list

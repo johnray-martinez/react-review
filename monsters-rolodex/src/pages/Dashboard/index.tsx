@@ -1,17 +1,24 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, ChangeEvent} from 'react';
 import CardList from '../../components/cardList';
 import InputField from '../../components/inputField';
+import { get } from '../../utils/fetch';
+
+export type Monster = {
+  id: string,
+  name: string,
+  email: string,
+  image: string
+}
 
 const Dashboard = () => {
   // state setup
   const [searchBar, setSearchBar] = useState('');
-  const [monsters, setMonsters] = useState([]);
-  const [filteredMonsters, setFilteredMonsters] = useState([]);
+  const [monsters, setMonsters] = useState<Monster[]>([]);
+  const [filteredMonsters, setFilteredMonsters] = useState<Monster[]>([]);
 
   // hooks
   useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/users')
-     .then((response) => response.json())
+    get<Monster[]>('https://jsonplaceholder.typicode.com/users')
      .then((data) => {
        data = data.map(item => {
          return {
@@ -31,13 +38,13 @@ const Dashboard = () => {
   }, [searchBar, monsters])
 
   // helpers
-  const updateSearchBar = (e) => {
+  const updateSearchBar = (e: ChangeEvent<HTMLInputElement>): void => {
     setSearchBar(e.target.value);
   }
 
   return(
     <main className="dashboard">
-        <InputField className='monster-searchbox' label='Search' value={searchBar} onChangeHandler={updateSearchBar} type='search'/>
+        <InputField className='monster-searchbox' label='Search' onChangeHandler={updateSearchBar} type='search'/>
         <CardList list={filteredMonsters}/>
     </main>
   );
